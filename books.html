@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Information</title>
+</head>
+<body>
+
+    <h1>Book Information</h1>
+
+    <div id="bookDetails"></div>
+
+    <script>
+        fetch("books.json")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Unable to load books.json");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const books = data.books;
+
+                const container = document.getElementById("bookDetails");
+
+                const firstBook = document.createElement("p");
+                firstBook.textContent = "First Book Title: " + books[0].title;
+                container.appendChild(firstBook);
+
+                const secondBook = document.createElement("p");
+                secondBook.textContent = "Second Book Author: " + books[1].author;
+                container.appendChild(secondBook);
+
+                books.forEach(book => {
+                    const genre = document.createElement("p");
+                    genre.textContent = book.title + " — " + book.genres.join(", ");
+                    container.appendChild(genre);
+                });
+            })
+            .catch(error => {
+                document.getElementById("bookDetails").textContent =
+                    "Error: Unable to retrieve book data.";
+                console.error(error);
+            });
+    </script>
+
+</body>
+</html>
